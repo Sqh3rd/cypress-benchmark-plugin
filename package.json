@@ -1,0 +1,14 @@
+{
+  "name": "cypress-benchmark-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@types/luxon": "^3.3.2",
+    "cypress": "^13.1.0",
+    "luxon": "^3.4.3",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}
