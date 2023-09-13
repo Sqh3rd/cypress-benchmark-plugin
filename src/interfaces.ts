@@ -1,8 +1,6 @@
 export interface Timeable {
   name: string;
   duration: number;
-
-  [key: string]: { toString(): string };
 }
 
 export interface BenchmarkCommand extends Timeable {
@@ -11,12 +9,14 @@ export interface BenchmarkCommand extends Timeable {
   endTimestamp: number;
   duration: number;
   args: any;
-  testId: string;
+  testId: number;
+  testName: string;
 }
 
 export interface LoggableTest extends Timeable {
   state: string;
   spec: string;
+  testId: number;
 }
 
 export interface TestConfig {
@@ -79,4 +79,17 @@ export interface FormattedTable {
   columns: TableColumns;
   header: string[];
   lines: string[];
+}
+
+export interface Durations {
+  ok: number;
+  warn: number;
+  critical: number;
+}
+
+export interface ElementsInRange<T> {
+  start: number;
+  end: number;
+  amount: number;
+  elements: T[];
 }

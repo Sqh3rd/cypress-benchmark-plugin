@@ -1,25 +1,21 @@
 import { Timeable } from "./interfaces";
 import { writeFileSync } from "fs";
-import { getKeys } from "./object-utils";
 
 export const saveAsCsv = <T extends Timeable>(timeables: Array<T>, file: string) => {
-  console.log(JSON.stringify(timeables));
-  let columns = getKeys<T>(timeables[0]);
-  let columnsString = columns.join("|");
+  let columns: string[] = [];
   let valueString = timeables.map(timeable => {
     let returnString = "";
-    for (let key in columns) {
-      let columnValueAsString = "";
-      if (timeable[key]) {
-        columnValueAsString = timeable[key].toString().replace("|", ",");
+    for (let key in timeable) {
+      if (!columns.includes(key.toString())) {
+        columns.push(key.toString());
       }
-      if (returnString.length == 0) {
-        returnString += columnValueAsString;
-      } else {
-        returnString += `|${columnValueAsString}`;
+      if (returnString.length >= 1) {
+        returnString += "|";
       }
+      returnString += `${timeable[key]}`;
     }
     return returnString;
   }).join("\n");
+  let columnsString = columns.join("|");
   writeFileSync(file, `${columnsString}\n${valueString}`, { flag: "w" });
 };
