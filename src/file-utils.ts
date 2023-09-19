@@ -1,5 +1,5 @@
 import { Timeable } from "./interfaces";
-import { writeFileSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 
 export const saveAsCsv = <T extends Timeable>(timeables: Array<T>, file: string) => {
   let columns: string[] = [];
@@ -12,10 +12,12 @@ export const saveAsCsv = <T extends Timeable>(timeables: Array<T>, file: string)
       if (returnString.length >= 1) {
         returnString += "|";
       }
-      returnString += `${timeable[key]}`;
+      returnString += String(timeable[key]);
     }
     return returnString;
   }).join("\n");
   let columnsString = columns.join("|");
+  if (!existsSync(file))
+    mkdirSync(file, { recursive: true});
   writeFileSync(file, `${columnsString}\n${valueString}`, { flag: "w" });
 };
