@@ -121,6 +121,20 @@ const alignCenter = (value: string, maxCharacters: number, fillCharacter: string
   return fillCharacter.repeat(Math.floor(remainder / 2)) + value + secondHalfFillCharacter.repeat(Math.ceil(remainder / 2));
 };
 
+const createSections = (sections: number[], middleCharacter: string, fillCharacter: string, inbetweenFillCharacter: string, longestIndicator: number) => {
+  let output: string[] = [];
+  sections.forEach((_section, index) => {
+    let inbetweenChar = _section > 0 ? inbetweenFillCharacter : fillCharacter; 
+    if (index === 0) {
+      output.push(alignCenter(middleCharacter, longestIndicator, fillCharacter, inbetweenChar));
+    } else if (index === sections.length - 1) {
+      output.push(alignCenter(middleCharacter, longestIndicator, inbetweenChar, fillCharacter));
+    } else {
+      output.push(alignCenter(middleCharacter, longestIndicator, inbetweenChar));
+    }
+  });
+  return output;
+}
 export const barDiagram = <T extends Timeable>(timeables: Array<T>, durations: Durations) => {
   let barDiagramString = "";
   let block = String.fromCharCode(2588);
@@ -148,12 +162,13 @@ export const barDiagram = <T extends Timeable>(timeables: Array<T>, durations: D
       max = filteredTimeables.length;
     }
   }
-  let timeableDuplicateSortedByDuration = timeableDuplicate.sort((t1, t2) => t1.duration - t2.duration); 
+  let timeableDuplicateSortedByDuration = [...timeables].sort((t1, t2) => t1.duration - t2.duration); 
   let shortestTimeable = timeableDuplicateSortedByDuration.at(-1)?.duration; 
-  let end = timeableDuplicateSortedByDuration.at(0)?.duration ?? Infinity;
+  let end = timeableDuplicateSortedByDuration.at(0)?.duration ?? undefined;
   let start =  shortestTimeable < durationsAsArray.at(0) ? shortestTimeable : undefined;
-  durationsAsArray.push(start ?? end);
-  durationsAsArray = durationsAsArray.sort((d1, d2) => d1 - d2);
+  if (start)
+    durationsAsArray.push(start);
+  durationsAsArray.sort((d1, d2) => d1 - d2);
   entriesByDuration.push({
     start: durationsAsArray.at(-1)!,
     end: end,
@@ -170,12 +185,13 @@ export const barDiagram = <T extends Timeable>(timeables: Array<T>, durations: D
   let stepPadding = " ".repeat(stepPaddingAmount);
   let longestIndicator = durationsAsArray.map(duration => String(duration)).sort((s1, s2) => s2.length - s1.length).at(0).length;
   let footer: string[] = [];
+  let sections = entriesByDuration.sort((e1, e2) => e2.start - e1.start).map(e => e.amount);
   footer.push(stepPadding + formattingCharacters.VERTICAL_LINE);
   footer.push(" ".repeat(stepPaddingAmount - 2) + "0 " + formattingCharacters.INVERTED_T);
   footer.push(stepPadding + " ");
-  footer[1] += durationsAsArray.map(_duration => alignCenter(formattingCharacters.VERTICAL_HORIZONTAL_LINE, longestIndicator, formattingCharacters.HORIZONTAL_LINE, blockCharacters.UPPER_HALF)).join(formattingCharacters.HORIZONTAL_LINE);
+  footer[1] += createSections(sections, formattingCharacters.VERTICAL_HORIZONTAL_LINE, formattingCharacters.HORIZONTAL_LINE, blockCharacters.UPPER_HALF, longestIndicator).join(blockCharacters.UPPER_HALF);
   footer[2] += durationsAsArray.map(duration => alignCenter(String(duration), longestIndicator, " ")).join(" ");
-  footer[0] += durationsAsArray.map(_duration => alignCenter(" ", longestIndicator, " ", blockCharacters.FULL)).join(" ");
+  footer[0] += createSections(sections, " ", " ", blockCharacters.FULL, longestIndicator).join(blockCharacters.FULL);
   barDiagramString = footer.join("\n");
   return barDiagramString;
 };

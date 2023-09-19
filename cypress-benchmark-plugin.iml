@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4">
+<module type="WEB_MODULE" version="4">
+  <component name="CheckStyle-IDEA-Module" serialisationVersion="2">
+    <option name="activeLocationsIds" />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/node" />
+      <excludeFolder url="file://$MODULE_DIR$/out-tsc" />
+      <excludeFolder url="file://$MODULE_DIR$/tmp" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
   <component name="SonarLintModuleSettings">
-    <option name="uniqueId" value="0f73af99-bf7f-4fd2-8e96-b2877cfc9f18" />
+    <option name="uniqueId" value="c45c847b-b436-4830-a896-f93e65129050" />
   </component>
 </module>
