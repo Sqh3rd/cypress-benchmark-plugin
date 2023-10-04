@@ -4,13 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="94d361ee-f9f6-41fb-8a43-02958a2cf677" name="Changes" comment="fix intelliJ module">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="94d361ee-f9f6-41fb-8a43-02958a2cf677" name="Changes" comment="cleanup and start with unit tests because I'm a very responsible programmer">
+      <change afterPath="$PROJECT_DIR$/jest.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/implementations/bar-diagram.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/implementations/formatted-table.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/object-utils.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/7/d7ecba0a2dfbea6e6942c0cc0fb6515545046f99" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/7/d7ecba0a2dfbea6e6942c0cc0fb6515545046f99" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress-benchmark-plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cypress-benchmark-plugin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/file-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/benchmark-plugin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/benchmark-plugin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/file-utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/interfaces.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/object-utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,48 +63,98 @@
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/private/cypress-benchmark-plugin",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/private/cypress-benchmark-plugin/node_modules/jest",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.18277822",
     "project.structure.side.proportion": "0.20019156",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "settings.typescriptcompiler",
     "ts.external.directory.path": "C:\\private\\cypress-benchmark-plugin\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="cypress-benchmark-plugin" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="cypress-benchmark-plugin" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\private\cypress-benchmark-plugin\src\test" />
+      <recent name="C:\private\cypress-benchmark-plugin\src\main" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Jest.formatted table">
+    <configuration name="formatted table" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
       <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/test/object-utils.test.ts" />
+      <test-names>
+        <test-name value="formatted table" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="object-utils (1)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/object-utils.test.ts" />
+      <test-names>
+        <test-name value="object-utils" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="object-utils (2)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/test/object-utils.test.ts" />
+      <test-names>
+        <test-name value="object-utils" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="object-utils" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/object-utils.spec.ts" />
+      <test-names>
+        <test-name value="object-utils" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="object-utils.create formatted table" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/object-utils.spec.ts" />
+      <test-names>
+        <test-name value="object-utils" />
+        <test-name value="create formatted table" />
+      </test-names>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build" />
+        <item itemvalue="Jest.formatted table" />
+        <item itemvalue="Jest.object-utils (2)" />
+        <item itemvalue="Jest.object-utils (1)" />
+        <item itemvalue="Jest.object-utils" />
+        <item itemvalue="Jest.object-utils.create formatted table" />
       </list>
     </recent_temporary>
   </component>
@@ -113,7 +174,9 @@
       <workItem from="1694371713709" duration="2730000" />
       <workItem from="1694405177068" duration="24438000" />
       <workItem from="1695010371572" duration="592000" />
-      <workItem from="1695106183906" duration="1842000" />
+      <workItem from="1695106183906" duration="4703000" />
+      <workItem from="1695417606310" duration="1515000" />
+      <workItem from="1696422267820" duration="5071000" />
     </task>
     <task id="LOCAL-00001" summary="Footer for bar diagram">
       <option name="closed" value="true" />
@@ -139,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695108675918</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="create directory to save file in if it doesn't exist">
+      <option name="closed" value="true" />
+      <created>1695109490753</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695109490753</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -148,7 +219,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Footer for bar diagram" />
     <MESSAGE value="fix intelliJ module" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix intelliJ module" />
+    <MESSAGE value="create directory to save file in if it doesn't exist" />
+    <MESSAGE value="cleanup and start with unit tests because I'm a very responsible programmer" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup and start with unit tests because I'm a very responsible programmer" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

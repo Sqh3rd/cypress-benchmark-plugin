@@ -67,20 +67,6 @@ export interface CommandQueue extends Cypress.CommandQueue {
 
   logs(filter: any): any[];
 }
-export interface TableColumn {
-  name: string;
-  width: number;
-  values: any[];
-}
-export interface TableColumns {
-  [key: string]: TableColumn;
-}
-export interface FormattedTable {
-  columns: TableColumns;
-  header: string[];
-  lines: string[];
-}
-
 export interface Durations {
   ok: number;
   warn: number;
