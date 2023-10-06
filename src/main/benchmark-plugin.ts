@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { DateTime } from "luxon";
-import { BenchmarkCommand, Durations, LoggableTest, Test } from "./interfaces";
+import { BenchmarkCommand, DurationBoundaries, LoggableTest, Test } from "./interfaces";
 import { saveAsCsv } from "./file-utils";
 import { barDiagram, formattedTimeableTable, toCommandQueue } from "./object-utils";
 import CypressRunResult = CypressCommandLine.CypressRunResult;
@@ -65,7 +65,7 @@ const handleSuccess = (result: CypressRunResult, fileLocation: string) => {
     numberOfTestsShown = loggableTests.length;
   }
   loggableTests.sort((test1, test2) => test2.duration - test1.duration);
-  let durations = { ok: 250, warn: 500, critical: 1000} as Durations;
+  let durations = { ok: 250, warn: 500, critical: 1000} as DurationBoundaries;
   let formattedTable = formattedTimeableTable(loggableTests.slice(0, numberOfTestsShown), durations);
   let commands = resultCommands.flatMap((commands, index) => {
     commands.forEach(command => command.testId = index);

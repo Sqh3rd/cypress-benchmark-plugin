@@ -1,9 +1,12 @@
-import { ObjectUtils } from "../main/object-utils";
 import { describe, expect, test} from "@jest/globals";
+import { toFormattedTable } from "../../main/implementations/formatted-table";
 
 describe("formatted table", () => {
   let testArray = [{ name: "asdf", value: 1 }, { name: "something else indeed", value: 100 }];
-  let table = ObjectUtils.toFormattedTable(testArray);
+  let table = toFormattedTable(testArray);
+  test("print formatted String", () => {
+    console.log(table.toFormattedString());
+  });
   test("non-visual stuff", () => {
     expect(table.columns).toStrictEqual({
       name: { name: "name", width: 21, values: ["asdf", "something else indeed"] },

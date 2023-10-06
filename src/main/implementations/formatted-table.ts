@@ -5,9 +5,11 @@ export interface TableColumn {
   width: number;
   values: any[];
 }
+
 export interface TableColumns {
   [key: string]: TableColumn;
 }
+
 export class FormattedTable {
   columns: TableColumns;
   headers: string[];
@@ -44,11 +46,13 @@ const extendHeader = (header: string[], column: TableColumn) => {
   header[1] += getTextWithPrefixIfHasLength(formattingCharacters.VERTICAL_LINE, header[1], columnTest);
   header[2] += getTextWithPrefixIfHasLength(formattingCharacters.VERTICAL_HORIZONTAL_LINE, header[2], formattingCharacters.HORIZONTAL_LINE.repeat(column.width + 2), 1);
 };
+
 const closeHeader = (header: string[]) => {
   header[0] += String.fromCharCode(0x2510);
   header[1] += formattingCharacters.VERTICAL_LINE;
   header[2] += String.fromCharCode(0x2524);
 };
+
 export const toFormattedTable = (objs: Array<object>): FormattedTable => {
   if (objs.length == 0) return new FormattedTable({}, [], []);
   let columns: TableColumns = {};

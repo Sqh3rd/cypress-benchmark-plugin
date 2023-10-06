@@ -1,9 +1,6 @@
-import { blockCharacters, formattingCharacters } from "./constants";
 import { toFormattedTable } from "./implementations/formatted-table";
 import {
-  CommandQueue,
-  Durations,
-  ElementsInRange,
+  CommandQueue, DurationBoundaries,
   Timeable
 } from "./interfaces";
 
@@ -25,7 +22,7 @@ export const toCommandQueue = (command: Cypress.CommandQueue) => {
 
 export const formattedTimeableTable = <T extends Timeable>(
   timeables: Array<T>,
-  durations: Durations
+  durations: DurationBoundaries
 ) => {
   let table = toFormattedTable(timeables);
   for (let i = 0; i < table.columns["duration"].values.length; i++) {
@@ -43,90 +40,6 @@ export const formattedTimeableTable = <T extends Timeable>(
     table.lines[i] = `${col}${table.lines[i]}\x1B[m`;
   }
   return table.toString();
-};
-
-const alignCenter = (value: string, maxCharacters: number, fillCharacter: string = " ", secondHalfFillCharacter?: string) => {
-  secondHalfFillCharacter = secondHalfFillCharacter ?? fillCharacter;
-  if (maxCharacters < value.length) {
-    throw Error("maxCharacters have to be longer or equal ot the given value");
-  }
-  let remainder = maxCharacters - value.length;
-  return fillCharacter.repeat(Math.floor(remainder / 2)) + value + secondHalfFillCharacter.repeat(Math.ceil(remainder / 2));
-};
-
-const createSections = (sections: number[], middleCharacter: string, fillCharacter: string, inbetweenFillCharacter: string, longestIndicator: number) => {
-  let output: string[] = [];
-  sections.forEach((_section, index) => {
-    let inbetweenChar = _section > 0 ? inbetweenFillCharacter : fillCharacter;
-    if (index === 0) {
-      output.push(alignCenter(middleCharacter, longestIndicator, fillCharacter, inbetweenChar));
-    } else if (index === sections.length - 1) {
-      output.push(alignCenter(middleCharacter, longestIndicator, inbetweenChar, fillCharacter));
-    } else {
-      output.push(alignCenter(middleCharacter, longestIndicator, inbetweenChar));
-    }
-  });
-  return output;
-};
-export const barDiagram = <T extends Timeable>(timeables: Array<T>, durations: Durations) => {
-  let barDiagramString = "";
-  let block = String.fromCharCode(2588);
-  let size = 20;
-  let durationsAsArray: number[] = [];
-  for (let key in durations) {
-    durationsAsArray.push(durations[key]);
-  }
-  let entriesByDuration: ElementsInRange<T>[] = [];
-  let timeableDuplicate = [...timeables];
-  let max: number = 0;
-  for (let i = 0; i < durationsAsArray.length; i++) {
-    let filteredTimeables: T[];
-    let start: number;
-    let end: number = Infinity;
-    if (i === 0) {
-      filteredTimeables = timeableDuplicate.filter(timeable => timeable.duration <= durationsAsArray[i]);
-      start = filteredTimeables.sort((t1, t2) => t2.duration - t1.duration).at(0)?.duration ?? -Infinity;
-    } else {
-      filteredTimeables = timeableDuplicate.filter(timeable => durationsAsArray[i - 1] < timeable.duration && timeable.duration <= durationsAsArray[i]);
-    }
-    entriesByDuration.push({ start: start, end: end, amount: filteredTimeables.length, elements: filteredTimeables });
-    timeableDuplicate = timeableDuplicate.filter(item => filteredTimeables.indexOf(item) < 0);
-    if (filteredTimeables.length > max) {
-      max = filteredTimeables.length;
-    }
-  }
-  let timeableDuplicateSortedByDuration = [...timeables].sort((t1, t2) => t1.duration - t2.duration);
-  let shortestTimeable = timeableDuplicateSortedByDuration.at(-1)?.duration;
-  let end = timeableDuplicateSortedByDuration.at(0)?.duration ?? undefined;
-  let start = shortestTimeable < durationsAsArray.at(0) ? shortestTimeable : undefined;
-  if (start)
-    durationsAsArray.push(start);
-  durationsAsArray.sort((d1, d2) => d1 - d2);
-  entriesByDuration.push({
-    start: durationsAsArray.at(-1)!,
-    end: end,
-    amount: timeableDuplicate.length,
-    elements: timeableDuplicate
-  });
-  if (timeableDuplicate.length > max) {
-    max = timeableDuplicate.length;
-  }
-  let maxAsE = max.toExponential(2).toLowerCase().split("e").map(part => Number(part));
-  let maxDisplay = Math.ceil(maxAsE[0]) * 10 ** maxAsE[1];
-  let steps = maxDisplay / (size / 2);
-  let stepPaddingAmount = String(maxDisplay).length + 2;
-  let stepPadding = " ".repeat(stepPaddingAmount);
-  let longestIndicator = durationsAsArray.map(duration => String(duration)).sort((s1, s2) => s2.length - s1.length).at(0).length;
-  let footer: string[] = [];
-  let sections = entriesByDuration.sort((e1, e2) => e2.start - e1.start).map(e => e.amount);
-  footer.push(stepPadding + formattingCharacters.VERTICAL_LINE);
-  footer.push(" ".repeat(stepPaddingAmount - 2) + "0 " + formattingCharacters.INVERTED_T);
-  footer.push(stepPadding + " ");
-  footer[1] += createSections(sections, formattingCharacters.VERTICAL_HORIZONTAL_LINE, formattingCharacters.HORIZONTAL_LINE, blockCharacters.UPPER_HALF, longestIndicator).join(blockCharacters.UPPER_HALF);
-  footer[2] += durationsAsArray.map(duration => alignCenter(String(duration), longestIndicator, " ")).join(" ");
-  footer[0] += createSections(sections, " ", " ", blockCharacters.FULL, longestIndicator).join(blockCharacters.FULL);
-  barDiagramString = footer.join("\n");
-  return barDiagramString;
 };
 
 export class ObjectUtils {
