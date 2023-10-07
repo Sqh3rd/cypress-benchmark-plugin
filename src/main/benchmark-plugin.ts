@@ -2,9 +2,10 @@
 import { DateTime } from "luxon";
 import { BenchmarkCommand, DurationBoundaries, LoggableTest, Test } from "./interfaces";
 import { saveAsCsv } from "./file-utils";
-import { barDiagram, formattedTimeableTable, toCommandQueue } from "./object-utils";
+import { formattedTimeableTable, toCommandQueue } from "./object-utils";
 import CypressRunResult = CypressCommandLine.CypressRunResult;
 import CypressFailedRunResult = CypressCommandLine.CypressFailedRunResult;
+import { barDiagram } from "./implementations/bar-diagram";
 
 export class BenchmarkPlugin {
   static getStartupString = (config: Cypress.PluginConfigOptions) => getStartupString(config);

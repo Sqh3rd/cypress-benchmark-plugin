@@ -68,8 +68,6 @@ export interface CommandQueue extends Cypress.CommandQueue {
   logs(filter: any): any[];
 }
 
-export interface DurationBoundaries {
-  ok: number;
-  warn: number;
-  critical: number;
+export interface Measurable {
+  value: number;
 }
