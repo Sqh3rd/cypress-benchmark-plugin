@@ -67,7 +67,3 @@ export interface CommandQueue extends Cypress.CommandQueue {
 
   logs(filter: any): any[];
 }
-
-export interface Measurable {
-  value: number;
-}

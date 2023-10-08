@@ -9,7 +9,8 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "tests": "jest"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

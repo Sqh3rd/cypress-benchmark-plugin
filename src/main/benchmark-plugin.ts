@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { DateTime } from "luxon";
-import { BenchmarkCommand, DurationBoundaries, LoggableTest, Test } from "./interfaces";
+import { BenchmarkCommand, LoggableTest, Test } from "./interfaces";
 import { saveAsCsv } from "./file-utils";
 import { formattedTimeableTable, toCommandQueue } from "./object-utils";
 import CypressRunResult = CypressCommandLine.CypressRunResult;
@@ -8,25 +8,37 @@ import CypressFailedRunResult = CypressCommandLine.CypressFailedRunResult;
 import { barDiagram } from "./implementations/bar-diagram";
 
 export class BenchmarkPlugin {
-  static getStartupString = (config: Cypress.PluginConfigOptions) => getStartupString(config);
-  static benchmarkEvents = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions, fileLocation: string) =>
-    benchmarkEvents(on, config, fileLocation);
+  static getStartupString = (config: Cypress.PluginConfigOptions) =>
+    getStartupString(config);
+  static benchmarkEvents = (
+    on: Cypress.PluginEvents,
+    config: Cypress.PluginConfigOptions,
+    fileLocation: string,
+  ) => benchmarkEvents(on, config, fileLocation);
   static benchmarkComponentTestSetup = () => benchmarkComponentTestSetup();
 }
 
 let resultCommands: BenchmarkCommand[][] = [];
 let lastTestId = 0;
 const getStartupString = (config: Cypress.PluginConfigOptions) => {
-  return config.env["benchmark"] !== true ? "" : "Running with benchmarking enabled";
+  return config.env["benchmark"] !== true
+    ? ""
+    : "Running with benchmarking enabled";
 };
-const benchmarkEvents = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions, fileLocation: string) => {
+const benchmarkEvents = (
+  on: Cypress.PluginEvents,
+  config: Cypress.PluginConfigOptions,
+  fileLocation: string,
+) => {
   if (config.env["benchmark"] !== true) return;
   on("task", {
     stats(commands: BenchmarkCommand[]) {
-      resultCommands.push(commands.map(command => ({ ...command, testId: lastTestId })));
+      resultCommands.push(
+        commands.map((command) => ({ ...command, testId: lastTestId })),
+      );
       lastTestId++;
       return null;
-    }
+    },
   });
   on("after:run", (result) => {
     if ("status" in result && result.status === "failed") {
@@ -37,17 +49,24 @@ const benchmarkEvents = (on: Cypress.PluginEvents, config: Cypress.PluginConfigO
   });
 };
 const getTimeDifferenceFromISO = (time1: string, time2: string) => {
-  return DateTime.fromISO(time1).toMillis() - DateTime.fromISO(time2).toMillis();
+  return (
+    DateTime.fromISO(time1).toMillis() - DateTime.fromISO(time2).toMillis()
+  );
 };
-const handleFailure = (_result: CypressFailedRunResult) => {
-};
+const handleFailure = (_result: CypressFailedRunResult) => {};
 const handleSuccess = (result: CypressRunResult, fileLocation: string) => {
   let totalBreakTime = 0;
   let totalRunTime = 0;
   for (let i = 0; i < result.runs.length; i++) {
-    totalRunTime += getTimeDifferenceFromISO(result.runs[i].stats.endedAt, result.runs[i].stats.startedAt);
+    totalRunTime += getTimeDifferenceFromISO(
+      result.runs[i].stats.endedAt,
+      result.runs[i].stats.startedAt,
+    );
     if (i < result.runs.length - 1)
-      totalBreakTime += getTimeDifferenceFromISO(result.runs[i + 1].stats.startedAt, result.runs[i].stats.endedAt);
+      totalBreakTime += getTimeDifferenceFromISO(
+        result.runs[i + 1].stats.startedAt,
+        result.runs[i].stats.endedAt,
+      );
   }
   let tests = result.runs.map((run) => run.tests);
   let loggableTests = tests.flat().map(
@@ -57,8 +76,8 @@ const handleSuccess = (result: CypressRunResult, fileLocation: string) => {
         duration: test.duration,
         spec: test.title.at(0)!,
         name: test.title.at(1)!,
-        testId: index
-      } as LoggableTest)
+        testId: index,
+      }) as LoggableTest,
   );
   let filePath = `${fileLocation}/tmp/${DateTime.now().toISODate()}`;
   let numberOfTestsShown = 50;
@@ -66,10 +85,12 @@ const handleSuccess = (result: CypressRunResult, fileLocation: string) => {
     numberOfTestsShown = loggableTests.length;
   }
   loggableTests.sort((test1, test2) => test2.duration - test1.duration);
-  let durations = { ok: 250, warn: 500, critical: 1000} as DurationBoundaries;
-  let formattedTable = formattedTimeableTable(loggableTests.slice(0, numberOfTestsShown), durations);
+  let formattedTable = formattedTimeableTable(
+    loggableTests.slice(0, numberOfTestsShown),
+    durations,
+  );
   let commands = resultCommands.flatMap((commands, index) => {
-    commands.forEach(command => command.testId = index);
+    commands.forEach((command) => (command.testId = index));
     return commands;
   });
   saveAsCsv(loggableTests, `${filePath}/tests.csv`);
@@ -78,7 +99,7 @@ const handleSuccess = (result: CypressRunResult, fileLocation: string) => {
   console.log(`Total run time ${totalRunTime / 1000}s`);
   console.log(`Relative break time ${totalBreakTime / totalRunTime}`);
   console.log(`Slowest ${numberOfTestsShown}\n${formattedTable}`);
-  console.log(`Bar\n${barDiagram(loggableTests, {ok: 250, warn: 500, critical: 1000})}`)
+  console.log(`Bar\n${barDiagram(loggableTests, [250, 500, 1000])}`);
 };
 
 const benchmarkComponentTestSetup = () => {
@@ -104,7 +125,7 @@ const benchmarkComponentTestSetup = () => {
       startTimestamp: +new Date(),
       args: c.args,
       endTimestamp: -1,
-      duration: -1
+      duration: -1,
     });
     commandId++;
     lastCommand = commands.at(-1)!;
@@ -124,15 +145,18 @@ const benchmarkComponentTestSetup = () => {
   Cypress.on("command:end", (cc) => {
     let c = toCommandQueue(cc);
     if (c.name === "task") return;
-    if (commands.length < 1) throw new Error(`Something went seriously fucking wrong with ${c.name}`);
+    if (commands.length < 1)
+      throw new Error(`Something went seriously fucking wrong with ${c.name}`);
     lastCommand.endTimestamp = +new Date();
-    lastCommand.duration = lastCommand.endTimestamp - lastCommand.startTimestamp;
+    lastCommand.duration =
+      lastCommand.endTimestamp - lastCommand.startTimestamp;
   });
 
   const sendStats = () => {
     if (lastCommand !== undefined && lastCommand.endTimestamp === -1) {
       lastCommand.endTimestamp = +new Date();
-      lastCommand.duration = lastCommand.endTimestamp - lastCommand.startTimestamp;
+      lastCommand.duration =
+        lastCommand.endTimestamp - lastCommand.startTimestamp;
     }
     commandId = 0;
     cy.task("stats", commands);
